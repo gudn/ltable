@@ -1,0 +1,8 @@
+{
+  "name": "ltable",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "runner"
+  ]
+}
