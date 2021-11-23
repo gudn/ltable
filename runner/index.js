@@ -18,7 +18,7 @@ function buildErrorMessage(e) {
 /**
  * @typedef {Object} Expr
  * @property {string} operation
- * @property {(Expr|string|boolean|null)} operand1
+ * @property {(Expr|string|boolean)} operand1
  * @property {(Expr|string|boolean|null)} operand2
  */
 
@@ -63,6 +63,43 @@ export function generateInputs(vars) {
   }
 
   return Array(Math.pow(2, n)).map((_, i) => convert(i))
+}
+
+/** Compute value of expr with given ctx return it value
+ * @param {(Expr|string|boolean)} expr
+ * @param {object} ctx
+ * @return {boolean}
+ */
+export function computeExpr(expr, ctx) {
+  switch (typeof expr) {
+    case 'boolean':
+      return expr
+    case 'string':
+      if (expr in ctx)
+        return ctx[expr]
+      throw `Not found ${expr} in context`
+    case 'object':
+      const op1 = computeExpr(expr.operand1, ctx)
+      const op2 = expr.operand2 !== null ? computeExpr(expr.operand2, ctx) : null
+      switch (expr.operation) {
+        case 'equality':
+          return op1 === op2
+        case 'implication':
+          return !op1 || op2
+        case 'or':
+          return (op1 || op2)
+        case 'xor':
+          return Boolean(op1 ^ op2)
+        case 'and':
+          return op1 && op2
+        case 'not':
+          return !op1
+        default:
+          throw `Invalid operation ${expr.operation}`
+      }
+    default:
+      throw `Invalid type of expr ${typeof expr}`
+  }
 }
 
 /**
