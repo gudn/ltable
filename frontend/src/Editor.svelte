@@ -1,7 +1,7 @@
 <script lang="ts">
   import debounce from 'lodash.debounce'
 
-  import { code } from './store'
+  import { code, error } from './store'
 
   function updateCode(e: InputEvent) {
     const target = e.target as HTMLTextAreaElement
@@ -26,7 +26,9 @@
             on:input={inputHandler}
           />
         </div>
-        <p class="help is-danger">This field is required</p>
+        {#if $error}
+          <p class="help is-danger">{$error}</p>
+        {/if}
       </div>
     </div>
   </div>
