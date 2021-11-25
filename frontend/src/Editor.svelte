@@ -17,12 +17,17 @@
       <p class="card-header-title">Table description</p>
     </header>
     <div class="card-content">
-      <textarea
-        class="textarea"
-        placeholder="Enter code..."
-        value={$code}
-        on:input={inputHandler}
-      />
+      <div class="field">
+        <div class="control">
+          <textarea
+            class="textarea"
+            placeholder="Enter code..."
+            value={$code}
+            on:input={inputHandler}
+          />
+        </div>
+        <p class="help is-danger">This field is required</p>
+      </div>
     </div>
   </div>
 </div>
